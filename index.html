@@ -649,7 +649,7 @@
   }
 
   .hero {
-    padding: clamp(2rem, 5vw, 4rem) 0 clamp(3rem, 7vw, 6rem);
+    padding: clamp(2rem, 5vw, 4rem) 0 clamp(1.5rem, 3vw, 2.5rem);
     text-align: center;
     overflow: hidden;
   }
@@ -690,7 +690,7 @@
     line-height: 1.02;
     letter-spacing: -0.025em;
     margin-bottom: 1.5rem;
-    max-width: 16ch;
+    max-width: 17ch;
     margin-inline: auto;
     will-change: transform;
   }
@@ -750,11 +750,7 @@
   .btn:hover .arrow { transform: translateX(4px); }
 
   .logos {
-    padding: 3rem 0 4rem;
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    margin-top: 4rem;
-    transition: border-color 0.3s;
+    padding: clamp(1.5rem, 3vw, 2.5rem) 0 clamp(3.25rem, 5.5vw, 5rem);
   }
 
   .logos-label {
@@ -821,13 +817,17 @@
 
   @media (max-width: 760px) { .platforms { grid-template-columns: 1fr; } }
 
-  section { padding: clamp(4rem, 8vw, 7rem) 0; }
+  section { padding: clamp(3.25rem, 5.5vw, 5rem) 0; }
 
   .section-header {
     max-width: 720px;
-    margin: 0 auto 4rem;
+    margin: 0 auto clamp(2.25rem, 4vw, 3rem);
     text-align: center;
   }
+
+  /* No orphaned words: balance headings, keep body copy from ending on one word */
+  h1, h2, h3, .pull-quote blockquote, .pre-hero p, .cta-punch { text-wrap: balance; }
+  p, li, .faq-a p { text-wrap: pretty; }
 
   .eyebrow {
     display: inline-block;
@@ -900,8 +900,15 @@
   .stage h3 { font-size: 1.1rem; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 0.5rem; transition: color 0.3s; }
   .stage p { font-size: 0.9rem; color: var(--text-dim); line-height: 1.55; transition: color 0.3s; }
 
-  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
-  @media (max-width: 820px) { .two-col { grid-template-columns: 1fr; gap: 2rem; } }
+  /* minmax(0,…) stops the code card's longest line from blowing the grid past the viewport */
+  .two-col { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 4rem; align-items: start; }
+  @media (max-width: 820px) {
+    .two-col { grid-template-columns: minmax(0, 1fr); gap: 2rem; }
+    #approach .approach-text { order: -1; } /* heading first, then the visual it introduces */
+    #approach .approach-visual { aspect-ratio: auto; width: 100%; min-height: 29.5rem; } /* reserves the typed-in height: no layout jump */
+  }
+  /* Desktop: the code card rides alongside the (taller) text column instead of floating mid-air */
+  @media (min-width: 821px) { #approach .approach-visual { position: sticky; top: 96px; } }
 
   .approach-visual {
     position: relative;
@@ -923,7 +930,8 @@
   .terminal-bar span:nth-child(2) { background: #ffd93d; }
   .terminal-bar span:nth-child(3) { background: #5eead4; }
 
-  .code { font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; line-height: 1.85; color: var(--code-text); transition: color 0.3s; }
+  .code { font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; line-height: 1.85; color: var(--code-text); transition: color 0.3s; overflow-x: auto; scrollbar-width: none; }
+  .code::-webkit-scrollbar { display: none; }
   .code .k { color: var(--accent); transition: color 0.3s; }
   .code .s { color: var(--accent-2); transition: color 0.3s; }
   .code .c { color: var(--text-mute); font-style: italic; transition: color 0.3s; }
@@ -972,8 +980,8 @@
   .stat-label { font-size: 0.88rem; color: var(--text-dim); transition: color 0.3s; }
 
   .cta {
-    margin: 4rem auto 2rem;
-    padding: clamp(3rem, 6vw, 5rem) clamp(1.75rem, 5vw, 4rem);
+    margin: 0 auto;
+    padding: clamp(2.5rem, 5vw, 4rem) clamp(1.5rem, 5vw, 4rem);
     background: radial-gradient(ellipse 70% 100% at 50% 0%, var(--glow-1), transparent 70%), var(--surface);
     border: 1px solid var(--border-strong);
     border-radius: var(--radius-lg);
@@ -996,7 +1004,7 @@
   .cta h2 { max-width: 18ch; margin-inline: auto; margin-bottom: 1rem; }
   .cta p { color: var(--text-dim); max-width: 50ch; margin: 0 auto 2rem; transition: color 0.3s; }
 
-  footer { border-top: 1px solid var(--border); padding: 3rem 0 2.5rem; margin-top: 2rem; transition: border-color 0.3s; }
+  footer { border-top: 1px solid var(--border); padding: 2.5rem 0 2.25rem; transition: border-color 0.3s; }
   .footer-inner { display: flex; justify-content: space-between; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
   .footer-inner p { color: var(--text-mute); font-size: 0.88rem; transition: color 0.3s; }
   .footer-links { display: flex; gap: 1.8rem; }
@@ -1004,7 +1012,7 @@
   .footer-links a:hover { color: var(--text); }
 
   /* Trust strip */
-  .trust-strip { padding: 3rem 0 0; text-align: center; }
+  .trust-strip { padding: clamp(2rem, 4vw, 2.75rem) 0 0; text-align: center; }
   .trust-label {
     font-size: 0.78rem;
     font-weight: 500;
@@ -1086,9 +1094,8 @@
     z-index: 2;
   }
   .milestone--finish .milestone-dot {
-    width: 18px;
-    height: 18px;
-    box-shadow: 0 0 14px var(--glow-1), 0 0 0 4px var(--surface), 0 0 0 5px var(--accent);
+    /* Same 14px box as the other weeks (so labels stay aligned); the ring is shadow-only */
+    box-shadow: 0 0 14px var(--glow-1), 0 0 0 3px var(--surface), 0 0 0 4.5px var(--accent);
   }
   .milestone-week {
     font-family: 'JetBrains Mono', monospace;
@@ -1906,6 +1913,12 @@
     padding: 0.55rem 0.6rem;
     min-height: 2.6rem;
     max-height: 6rem;
+    min-width: 0; /* let the flex item shrink instead of pushing the button out */
+  }
+  @media (max-width: 560px) {
+    .scope-form { flex-direction: column; }
+    .scope-input { min-height: 4rem; }
+    .scope-submit { justify-content: center; min-height: 2.75rem; }
   }
   .scope-input:focus { outline: none; }
   .scope-input::placeholder { color: var(--text-mute); }
@@ -2229,14 +2242,32 @@
   .case-morphing.morphing { opacity: 0.35; }
 
   /* Text scramble */
-  .scramble .dud { color: var(--accent); opacity: 0.65; }
-  .scramble.gradient .dud { -webkit-text-fill-color: initial; color: var(--accent); background: none; -webkit-background-clip: initial; background-clip: initial; opacity: 0.75; }
+  /* The real character keeps its exact width (hidden) and the noise glyph is painted over it,
+     so the headline's line breaks never change mid-animation — no layout shift on load. */
+  .scramble .dud { position: relative; visibility: hidden; }
+  .scramble .dud::after {
+    content: attr(data-c);
+    visibility: visible;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    color: var(--accent);
+    -webkit-text-fill-color: var(--accent);
+    opacity: 0.7;
+  }
 
   /* Rotating tagline typewriter */
   .tagline-cycler {
-    display: inline-flex;
-    align-items: baseline;
-    justify-content: center;
+    /* Fixed-width terminal line: typing fills it left-to-right instead of resizing + re-centring the pill */
+    display: flex;
+    width: min(100%, 28rem);
+    margin-inline: auto;
+    text-align: left;
+    /* flex-start, not baseline: an empty text span (between phrases) would otherwise re-baseline the prompt */
+    align-items: flex-start;
+    line-height: 1.45;
+    justify-content: flex-start;
     gap: 0.3rem;
     margin-top: 1.5rem;
     padding: 0.35rem 0.9rem;
@@ -2252,8 +2283,13 @@
     letter-spacing: -0.005em;
     transition: background 0.3s, border-color 0.3s, color 0.3s;
   }
-  .tagline-prompt { color: var(--accent); font-weight: 500; transition: color 0.3s; }
+  .tagline-prompt { color: var(--accent); font-weight: 500; transition: color 0.3s; white-space: nowrap; flex-shrink: 0; }
   .tagline-text { color: var(--text); min-height: 1em; transition: color 0.3s; }
+  /* Phones: the longer phrases wrap, so reserve both lines up front — the hero below never jumps */
+  @media (max-width: 560px) {
+    .tagline-cycler { font-size: 0.74rem; padding: 0.4rem 0.85rem; border-radius: 14px; }
+    .tagline-text { line-height: 1.45; min-height: 2.9em; }
+  }
   .tagline-cursor { color: var(--accent); font-weight: 300; animation: cursor-blink 1s steps(2, jump-none) infinite; transition: color 0.3s; }
   @keyframes cursor-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
   @media (prefers-reduced-motion: reduce) {
@@ -2317,7 +2353,7 @@
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
-    margin: 3rem auto 0;
+    margin: 2.25rem auto 0;
     color: var(--text-mute);
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.68rem;
@@ -2419,6 +2455,10 @@
     -webkit-mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
     mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
   }
+  /* Static (reduced-motion) layout wraps instead of scrolling: no edge fade, keep a gutter */
+  @media (prefers-reduced-motion: reduce) {
+    .cap-track-wrap { -webkit-mask-image: none; mask-image: none; padding: 0 clamp(1.25rem, 4vw, 2.5rem); }
+  }
   .cap-track {
     display: flex;
     gap: 0.8rem;
@@ -2474,6 +2514,7 @@
     font-family: inherit;
     font-size: 0.9rem;
     transition: border-color 0.2s;
+    min-width: 0; /* otherwise the input refuses to shrink and pushes "Send it" off the card on phones */
   }
   .lead-input:focus { outline: none; border-color: var(--accent); }
   .lead-input::placeholder { color: var(--text-mute); }
@@ -2500,6 +2541,7 @@
     min-height: 1.1em;
     transition: color 0.3s;
   }
+  .lead-msg:empty { margin-top: 0; min-height: 0; } /* collapse until there's a status to show */
   .lead-msg.ok { color: var(--accent-2); }
   .lead-msg.err { color: #ff6b5b; }
 
@@ -2508,7 +2550,7 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1.25rem;
-    align-items: start;
+    align-items: stretch; /* equal-height cards so all three CTAs line up */
   }
   @media (max-width: 880px) { .pricing-grid { grid-template-columns: 1fr; max-width: 460px; margin: 0 auto; } }
   .price-card {
@@ -2606,6 +2648,11 @@
   .from-left { opacity: 0; transform: translateX(-28px); transition: opacity 0.7s ease, transform 0.7s ease; }
   .from-right { opacity: 0; transform: translateX(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
   .from-left.in, .from-right.in { opacity: 1; transform: translateX(0); }
+  /* Single-column on phones: slide up instead of sideways so nothing pokes past the screen edge */
+  @media (max-width: 820px) {
+    .from-left, .from-right { transform: translateY(20px); }
+    .from-left.in, .from-right.in { transform: none; }
+  }
 
 </style>
 </head>
@@ -2695,7 +2742,7 @@
   <div class="container">
     <div class="pill reveal">
       <span class="pill-dot"></span>
-      Workflow-first AI delivery on Lovable · Claude Code · OpenClaw
+      Workflow-first AI delivery on Lovable · Claude&nbsp;Code · OpenClaw
     </div>
     <h1 class="reveal" id="hero-headline" aria-label="Ship AI-native products in weeks, not quarters."><span class="scramble" data-final="Ship AI-native products ">Ship AI-native products </span><span class="scramble gradient" data-final="in weeks,">in weeks,</span><span class="scramble" data-final=" not quarters."> not quarters.</span></h1>
     <p class="lead reveal">We scope what's worth building, build it in your repo, and train your team to run it. End-to-end delivery on Lovable, Claude Code and OpenClaw — the rigour of enterprise consulting at the cadence of a studio.</p>
@@ -2708,7 +2755,7 @@
       <form class="scope-form" id="scope-form">
         <label for="scope-input" class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Describe your workflow</label>
         <textarea class="scope-input" id="scope-input" rows="1" maxlength="400"
-          placeholder="Describe a workflow in one line — I'll draft a 3-week scope live…"></textarea>
+          placeholder="Describe one workflow — I'll draft a 3-week scope"></textarea>
         <button type="submit" class="scope-submit" id="scope-submit">Generate scope <span class="arrow">→</span></button>
       </form>
       <p class="scope-hint" id="scope-hint">Powered by Claude · try
@@ -2791,7 +2838,7 @@
   </div>
 </section>
 
-<section id="platforms" class="logos" data-hue="teal" style="padding-top: 3rem;">
+<section id="platforms" class="logos" data-hue="teal">
   <div class="container">
     <p class="logos-label reveal">We build on the tools your team already loves</p>
     <div class="platforms">
@@ -3543,7 +3590,10 @@
     if (reduceMotion) return;
     const targets = document.querySelectorAll('#hero-headline .scramble');
     const chars = '!<>-_\\/[]{}—=+*^?#░▒▓█▌▐▮▯▰▱abcdef0123456789';
+    const esc = (c) => c === '&' ? '&amp;' : c === '<' ? '&lt;' : c === '>' ? '&gt;' : c === '"' ? '&quot;' : c;
     function randChar() { return chars[Math.floor(Math.random() * chars.length)]; }
+    // Each character keeps its real glyph (hidden, so the width is exact); the noise is drawn on top via CSS ::after.
+    const cell = (real, glyph) => '<span class="dud" data-c="' + esc(glyph) + '">' + esc(real) + '</span>';
     targets.forEach((el, idx) => {
       const final = el.dataset.final || el.textContent;
       const queue = [];
@@ -3552,24 +3602,27 @@
         const end = start + Math.floor(Math.random() * 18) + 8;
         queue.push({ to: final[i], start, end, ch: '' });
       }
-      let frame = 0;
-      function render() {
+      let t0 = 0;
+      function render(now) {
+        if (!t0) t0 = now;
+        const frame = Math.floor((now - t0) / 16.67); // time-based: same pace on 60Hz, 120Hz and slow devices
         let out = '';
         let done = 0;
         for (let i = 0; i < queue.length; i++) {
           const q = queue[i];
-          if (frame >= q.end) { out += q.to; done++; }
+          if (q.to === ' ') { out += ' '; if (frame >= q.end) done++; continue; }
+          if (frame >= q.end) { out += esc(q.to); done++; }
           else if (frame >= q.start) {
-            if (!q.ch || Math.random() < 0.32) q.ch = q.to === ' ' ? ' ' : randChar();
-            out += '<span class="dud">' + q.ch + '</span>';
-          } else { out += q.to === ' ' ? ' ' : '&nbsp;'; }
+            if (!q.ch || Math.random() < 0.32) q.ch = randChar();
+            out += cell(q.to, q.ch);
+          } else { out += cell(q.to, ''); }
         }
         el.innerHTML = out;
-        if (done < queue.length) { frame++; requestAnimationFrame(render); }
-        else { el.textContent = final; }
+        if (done < queue.length) requestAnimationFrame(render);
+        else el.textContent = final;
       }
-      // Start with all placeholders hidden
-      el.innerHTML = final.split('').map(c => c === ' ' ? ' ' : '&nbsp;').join('');
+      // Start fully hidden, but with every character already occupying its final width
+      el.innerHTML = final.split('').map(c => c === ' ' ? ' ' : cell(c, '')).join('');
       setTimeout(() => requestAnimationFrame(render), 220 + idx * 140);
     });
   })();
